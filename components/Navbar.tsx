@@ -1,5 +1,5 @@
 import { UserButton } from '@clerk/nextjs'
-import { User, LogOut, Search } from 'lucide-react'
+import { User } from 'lucide-react'
 import Link from 'next/link'
 import { currentProfile } from '@/lib/current-profile'
 const Navbar = async () => {

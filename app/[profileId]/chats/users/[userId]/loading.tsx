@@ -1,5 +1,4 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
+
 import { Loader } from "lucide-react";
 
 const LoadingPage = () => {

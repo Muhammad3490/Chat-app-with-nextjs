@@ -1,9 +1,5 @@
 import { currentProfile } from "@/lib/current-profile";
 import { findOrCreateChat } from "@/lib/create-or-find-chat";
-import DialogComponent from "@/components/Dialog-components";
-import { Button } from "@/components/ui/button";
-import { MessageCircle } from "lucide-react";
-import SearchPeople from "@/components/search-component";
 import ChatHeader from "@/components/chat/chat-header";
 import ChatComponent from "@/components/chat/chat-component";
 

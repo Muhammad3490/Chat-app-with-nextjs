@@ -1,9 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState} from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import debounce from "lodash.debounce";
 import Link from "next/link";
+import { Loader } from "lucide-react";
 
 interface User {
   id: string;
@@ -62,7 +63,7 @@ const SearchPeople = ({profileId}:{profileId:string}) => {
         className="mt-1 block w-full border rounded-md shadow-sm p-2"
       />
       <div className="mt-4">
-        {isLoading && <p>Loading...</p>}
+        {isLoading && <><div className="flez w-full justify-center items-center"><Loader className="animate-spin"/></div></>}
         {!isLoading && foundUsers.length === 0 && searchQuery && (
           <p>No users found</p>
         )}

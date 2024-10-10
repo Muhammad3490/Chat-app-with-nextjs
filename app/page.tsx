@@ -1,6 +1,5 @@
 import { initialProfile } from "@/lib/initial-profile";
-import { redirect } from "next/navigation";
-import Image from "next/image";
+import { redirect } from "next/navigation";;
 
 export default async function Home() {
 

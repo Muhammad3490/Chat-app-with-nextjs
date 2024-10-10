@@ -9,11 +9,8 @@ import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
-interface PageProps {
-    params: { userId: string }
-}
 
-const UserChatsPage = async ({ params }: PageProps) => {
+const UserChatsPage = async () => {
     // Get the current user's profile
     const profile = await currentProfile();
 
