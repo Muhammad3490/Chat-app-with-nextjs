@@ -8,8 +8,8 @@
     "build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && prisma migrate deploy && next build"
+    "postinstall": "npx prisma generate",
+    "db/generate": "npx prisma generate"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.7.1",
