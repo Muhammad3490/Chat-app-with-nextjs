@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import useSocket from "@/hooks/useSocket";
 import { v4 as uuidv4 } from "uuid";
-import { Chat as PrismaChat, Profile, Message } from "@prisma/client";
+import { Chat as ChatType,Profile,Message } from "@/types";
 import MessageBubble from "./message-bubble";
 import { Button } from "../ui/button";
 import { Send, Smile } from "lucide-react";
@@ -10,7 +10,7 @@ import { Input } from "../ui/input";
 import EmojiPicker from 'emoji-picker-react';
 import DropDownComponent from "../Drop-down";
 interface PageProps {
-    chat: PrismaChat;
+    chat: ChatType;
     currentUser: Profile;
     otherUser: Profile;
 }
