@@ -2,15 +2,15 @@
   "name": "1235",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "prebuild": "prisma generate",
-    "dev": "next dev",
-    "build": "prisma generate && prisma migrate deploy && next build",
-    "start": "next start",
-    "lint": "next lint",
-    "postinstall": "npx prisma generate",
-    "db/generate": "npx prisma generate"
-  },
+"scripts": {
+  "dev": "next dev",
+  "start": "next start",
+  "lint": "next lint",
+  "prebuild": "npx prisma generate",
+  "vercel-build": "npm run build",
+  "postinstall": "npx prisma generate"
+}
+,
   "dependencies": {
     "@clerk/nextjs": "^5.7.1",
     "@neondatabase/serverless": "^0.10.1",
