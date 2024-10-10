@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://neondb_owner:f7U4cvWpVXai@ep-polished-wave-a5zsab6c-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require"
+}
+
+model Chat {
+  id        String @id @default(uuid())
+  memberOne String // References Profile (user one)
+  memberTwo String // References Profile (user two)
+
+  // Relations
+  memberOneProfile Profile   @relation("MemberOneChats", fields: [memberOne], references: [id])
+  memberTwoProfile Profile   @relation("MemberTwoChats", fields: [memberTwo], references: [id])
+  messages         Message[] // One-to-many relation with Message
+
+  // Constraints and metadata
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt
+
+  @@unique([memberOne, memberTwo]) // Ensure unique combination of memberOne and memberTwo
+  @@unique([memberTwo, memberOne])
+  @@index([memberOne])
+  @@index([memberTwo])
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Foreign keys
+  chatId     String
+  senderId   String // References Profile (sender)
+  receiverId String // References Profile (receiver)
+
+  // Relations
+  chat     Chat    @relation(fields: [chatId], references: [id])
+  sender   Profile @relation("SenderMessages", fields: [senderId], references: [id])
+  receiver Profile @relation("ReceiverMessages", fields: [receiverId], references: [id])
+
+  // Indexes for performance
+  @@index([chatId])
+  @@index([senderId])
+  @@index([receiverId])
+}
+
+model Profile {
+  id       String  @id @default(uuid())
+  userId   String  @unique @map("user_id")
+  name     String
+  imageUrl String?
+  email    String  @unique
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  memberOneChats   Chat[]    @relation("MemberOneChats")
+  memberTwoChats   Chat[]    @relation("MemberTwoChats")
+  sentMessages     Message[] @relation("SenderMessages")
+  receivedMessages Message[] @relation("ReceiverMessages")
+}
