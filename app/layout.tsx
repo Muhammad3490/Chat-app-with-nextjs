@@ -4,7 +4,6 @@ import {
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider/theme-provider'
 import { Inter_Tight } from 'next/font/google'
-import Navbar from '@/components/Navbar'
 const font = Inter_Tight({ subsets: ['latin'] })
 export default function RootLayout({
   children,

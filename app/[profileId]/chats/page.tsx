@@ -51,8 +51,8 @@ const UserChatsPage = async () => {
                 {chats.length > 0 ? (
                     <ScrollArea className="h-full py-8 w-full flex justify-center items-center">
                         <div className="w-full max-w-md rounded-lg">
-                            {chats.map((chat) => (
-                                <Link href={`/${profile.id}/chats/users/${chat?.memberOne === profile.id ? chat?.memberTwo : chat?.memberOne
+                            {chats.map((chat,i) => (
+                                <Link key={i} href={`/${profile.id}/chats/users/${chat?.memberOne === profile.id ? chat?.memberTwo : chat?.memberOne
                                     }`}>
                                     <div key={chat.id} className="p-4 px-2 border-b flex items-center cursor-pointer">
                                         <Avatar className="lg:w-12 lg:h-12 w-8 h-8 border-neutral-400 border/50">

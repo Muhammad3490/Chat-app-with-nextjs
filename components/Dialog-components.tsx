@@ -23,7 +23,7 @@ const DialogComponent = ({ trigger, title, desp, content }: PageProps) => {
                 <DialogTrigger>{trigger}</DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogHeader>{title}</DialogHeader>
+                        <DialogTitle>{title}</DialogTitle>
                         <DialogDescription>{desp}</DialogDescription>
                     </DialogHeader>
                     {content}
