@@ -8,22 +8,8 @@ import { MessageCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Chat } from "@prisma/client";
 
-// Custom type that includes chat and member profiles
-type ChatWithProfiles = Chat & {
-    memberOneProfile: {
-        id: string;
-        name: string;
-        imageUrl?: string;
-    };
-    memberTwoProfile: {
-        id: string;
-        name: string;
-        imageUrl?: string;
-    };
-};
-
+// UserChatsPage Component
 const UserChatsPage = async () => {
     // Get the current user's profile
     const profile = await currentProfile();
@@ -36,7 +22,7 @@ const UserChatsPage = async () => {
         );
     }
 
-    const chats: ChatWithProfiles[] = await db.chat.findMany({
+    const chats = await db.chat.findMany({
         where: {
             OR: [
                 { memberOne: profile.id },
