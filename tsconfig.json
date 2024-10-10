@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/[profileId]/chats/page.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/[profileId]/chats/page.jsx", "lib/pg.js", "components/chat/chat-component.jsx", "components/chat/chat-component.jsx"],
   "exclude": ["node_modules"]
 }

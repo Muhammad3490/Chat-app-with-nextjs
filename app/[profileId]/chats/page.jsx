@@ -1,5 +1,5 @@
 import { currentProfile } from "@/lib/current-profile";
-import { db } from "@/lib/db"; // Assuming you have db client setup in `lib/db`
+import  db  from "@/lib/db"; // Assuming you have db client setup in `lib/db`
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import SearchPeople from "@/components/search-component";

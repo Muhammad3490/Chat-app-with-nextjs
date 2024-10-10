@@ -1,5 +1,5 @@
 // Assuming you have a Prisma client instance imported
-import { db } from "@/lib/db"; // Adjust the path as needed
+import db  from "@/lib/db"; // Adjust the path as needed
 
 const findChat = async (memberOneId: string, memberTwoId: string) => {
     try {

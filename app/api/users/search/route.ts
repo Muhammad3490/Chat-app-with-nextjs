@@ -1,5 +1,5 @@
 // /app/api/users/search/route.ts
-import {db} from "@/lib/db"; // Prisma client
+import db from "@/lib/db"; // Prisma client
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);

@@ -87,7 +87,7 @@ const Chat = ({ chat, currentUser, otherUser }) => {
 
     return (
         <>
-            <div className="w-full h-auto px-2 lg:px-5 py-20 bg-neutral-200 dark:bg-slate-900 overflow-y-scroll">
+            <div className="w-full h-auto min-h-screen px-2 lg:px-5 py-20 bg-neutral-200 dark:bg-slate-900 overflow-y-scroll">
                 <div>
                     {messages.map((msg) => (
                         <MessageBubble
