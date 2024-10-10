@@ -8,7 +8,21 @@ import { MessageCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Chat } from "@prisma/client";
 
+// Custom type that includes chat and member profiles
+type ChatWithProfiles = Chat & {
+    memberOneProfile: {
+        id: string;
+        name: string;
+        imageUrl?: string;
+    };
+    memberTwoProfile: {
+        id: string;
+        name: string;
+        imageUrl?: string;
+    };
+};
 
 const UserChatsPage = async () => {
     // Get the current user's profile
@@ -22,7 +36,7 @@ const UserChatsPage = async () => {
         );
     }
 
-    const chats = await db.chat.findMany({
+    const chats: ChatWithProfiles[] = await db.chat.findMany({
         where: {
             OR: [
                 { memberOne: profile.id },
@@ -51,17 +65,21 @@ const UserChatsPage = async () => {
                 {chats.length > 0 ? (
                     <ScrollArea className="h-full py-8 w-full flex justify-center items-center">
                         <div className="w-full max-w-md rounded-lg">
-                            {chats.map((chat,i) => (
-                                <Link key={i} href={`/${profile.id}/chats/users/${chat?.memberOne === profile.id ? chat?.memberTwo : chat?.memberOne
-                                    }`}>
-                                    <div key={chat.id} className="p-4 px-2 border-b flex items-center cursor-pointer">
+                            {chats.map((chat) => (
+                                <Link
+                                    key={chat.id} // Use chat.id for the key prop
+                                    href={`/${profile.id}/chats/users/${chat.memberOne === profile.id ? chat.memberTwo : chat.memberOne}`}
+                                >
+                                    <div className="p-4 px-2 border-b flex items-center cursor-pointer">
                                         <Avatar className="lg:w-12 lg:h-12 w-8 h-8 border-neutral-400 border/50">
-                                            <AvatarImage src={chat?.memberOne === profile.id ? chat?.memberTwoProfile?.imageUrl : chat?.memberOneProfile?.imageUrl} />
+                                            <AvatarImage
+                                                src={chat.memberOne === profile.id ? chat.memberTwoProfile?.imageUrl : chat.memberOneProfile?.imageUrl || ""}
+                                                alt="User Avatar"
+                                            />
                                             <AvatarFallback>CN</AvatarFallback>
                                         </Avatar>
                                         <div className="ml-4">
                                             <p className="text-lg font-semibold">
-                                                {/* Determine the other member */}
                                                 {chat.memberOne === profile.id ? chat.memberTwoProfile.name : chat.memberOneProfile.name}
                                             </p>
                                             {chat.messages.length > 0 ? (
