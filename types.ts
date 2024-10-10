@@ -52,3 +52,21 @@ export type ChatWithProfiles = Chat & {
         imageUrl?: string;
     };
 }
+
+// Socket Types
+export interface SocketMessage {
+    chatId: string; // ID of the chat
+    senderId: string; // ID of the sender
+    receiverId: string; // ID of the receiver
+    content: string; // Content of the message
+    createdAt: Date; // Timestamp for when the message was created
+    id: string; // Unique identifier for the message
+}
+
+export interface SocketEvents {
+    join_chat: (chatId: string) => void; // Event for joining a chat
+    leave_chat: (chatId: string) => void; // Event for leaving a chat
+    send_message: (message: SocketMessage) => void; // Event for sending a message
+    receive_message: (message: Message) => void; // Event for receiving a message
+    previous_messages: (messages: Message[]) => void; // Event for receiving previous messages
+}

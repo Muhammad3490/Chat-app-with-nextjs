@@ -2,60 +2,56 @@
 import { useEffect, useState } from "react";
 import useSocket from "@/hooks/useSocket";
 import { v4 as uuidv4 } from "uuid";
-import { Chat as ChatType,Profile,Message } from "@/types";
 import MessageBubble from "./message-bubble";
 import { Button } from "../ui/button";
 import { Send, Smile } from "lucide-react";
 import { Input } from "../ui/input";
-import EmojiPicker from 'emoji-picker-react';
+import EmojiPicker from "emoji-picker-react";
 import DropDownComponent from "../Drop-down";
-interface PageProps {
-    chat: ChatType;
-    currentUser: Profile;
-    otherUser: Profile;
-}
 
-const Chat = ({ chat, currentUser, otherUser }: PageProps) => {
-    const [messages, setMessages] = useState<Message[]>([]);
-    const [newMessage, setNewMessage] = useState("");
+const Chat = ({ chat, currentUser, otherUser }) => {
+    const [messages, setMessages] = useState([]); // State for messages
+    const [newMessage, setNewMessage] = useState(""); // State for new message input
     const socket = useSocket("https://socket-server-production-98d8.up.railway.app"); // Connect to the Socket.IO server
 
     useEffect(() => {
         if (!socket) return;
 
-        socket.emit("join_chat", chat.id);
+        socket.emit("join_chat", chat.id); // Emit event to join the chat
 
-        const handlePreviousMessages = (prevMessages: Message[]) => {
+        const handlePreviousMessages = (prevMessages) => {
             setMessages((existingMessages) => {
                 const combinedMessages = [...existingMessages];
 
                 prevMessages.forEach((msg) => {
                     if (!combinedMessages.some((m) => m.id === msg.id)) {
-                        combinedMessages.push(msg);
+                        combinedMessages.push(msg); // Avoid duplicates
                     }
                 });
 
-                return combinedMessages;
+                return combinedMessages; // Update messages state
             });
         };
 
-        const handleReceiveMessage = (message: Message) => {
+        const handleReceiveMessage = (message) => {
             setMessages((prevMessages) => {
                 const exists = prevMessages.some((msg) => msg.id === message.id);
                 if (!exists) {
-                    return [...prevMessages, message];
+                    return [...prevMessages, message]; // Add new message if it doesn't exist
                 }
-                return prevMessages;
+                return prevMessages; // Return previous messages if it already exists
             });
         };
 
+        // Socket event listeners
         socket.on("previous_messages", handlePreviousMessages);
         socket.on("receive_message", handleReceiveMessage);
 
         return () => {
+            // Cleanup function to remove event listeners
             socket.off("previous_messages", handlePreviousMessages);
             socket.off("receive_message", handleReceiveMessage);
-            socket.emit("leave_chat", chat.id); // Optional: Leave the chat room
+            socket.emit("leave_chat", chat.id); // Leave the chat room when unmounted
         };
     }, [socket, chat.id]); // Dependency array includes chat.id
 
@@ -63,9 +59,9 @@ const Chat = ({ chat, currentUser, otherUser }: PageProps) => {
         if (newMessage.trim() === "") return; // Prevent sending empty messages
 
         // Generate a unique ID for the message
-        const messageId = uuidv4(); // Use UUID
+        const messageId = uuidv4(); // Use UUID for message ID
 
-        const messageData: Message = {
+        const messageData = {
             id: messageId,
             content: newMessage,
             createdAt: new Date(),
@@ -75,22 +71,15 @@ const Chat = ({ chat, currentUser, otherUser }: PageProps) => {
         };
 
         // Emit the message to the server
-        socket.emit("send_message", {
-            chatId: chat.id,
-            senderId: currentUser.id,
-            receiverId: otherUser.id,
-            content: messageData.content,
-            createdAt: messageData.createdAt,
-            id: messageId,
-        });
+        socket.emit("send_message", messageData);
 
         // Optimistically update the UI
         setMessages((prevMessages) => {
             const exists = prevMessages.some((msg) => msg.id === messageId);
             if (!exists) {
-                return [...prevMessages, messageData];
+                return [...prevMessages, messageData]; // Add new message if it doesn't exist
             }
-            return prevMessages;
+            return prevMessages; // Return previous messages if it already exists
         });
 
         setNewMessage(""); // Clear the input field
@@ -98,31 +87,21 @@ const Chat = ({ chat, currentUser, otherUser }: PageProps) => {
 
     return (
         <>
-        <div className="w-full h-auto px-2 lg:px-5 py-20 bg-neutral-200 dark:bg-slate-900 overflow-y-scroll">
-            <div>
-                {messages.map((msg) =>
-                    msg.senderId === currentUser.id ? (
+            <div className="w-full h-auto px-2 lg:px-5 py-20 bg-neutral-200 dark:bg-slate-900 overflow-y-scroll">
+                <div>
+                    {messages.map((msg) => (
                         <MessageBubble
                             key={msg.id}
-                            name={currentUser.name}
-                            author="current"
-                            imgUrl={currentUser.imageUrl}
+                            name={msg.senderId === currentUser.id ? currentUser.name : otherUser.name}
+                            author={msg.senderId === currentUser.id ? "current" : "other"}
+                            imgUrl={msg.senderId === currentUser.id ? currentUser.imageUrl : otherUser.imageUrl}
                             content={msg.content}
-                            created_at={msg?.createdAt}
+                            created_at={msg.createdAt}
                         />
-                    ) : (
-                        <MessageBubble
-                            key={msg.id}
-                            name={otherUser.name}
-                            author="other"
-                            imgUrl={otherUser.imageUrl}
-                            content={msg.content}
-                        />
-                    )
-                )}
+                    ))}
+                </div>
             </div>
-        </div>
-        <div className="flex bottom-0 fixed p-3 space-x-2 w-full px-2 lg:px-5 bg-secondary/70 z-20">
+            <div className="flex bottom-0 fixed p-3 space-x-2 w-full px-2 lg:px-5 bg-secondary/70 z-20">
                 <Input
                     type="text"
                     value={newMessage}
@@ -138,7 +117,8 @@ const Chat = ({ chat, currentUser, otherUser }: PageProps) => {
                             }
                         />
                     }
-                    trigger={<Smile />} />
+                    trigger={<Smile />}
+                />
                 <Button onClick={sendMessage} size={"icon"} className="rounded-lg">
                     <Send />
                 </Button>
