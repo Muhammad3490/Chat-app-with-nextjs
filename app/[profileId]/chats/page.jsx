@@ -85,7 +85,7 @@ const UserChatsPage = async () => {
                 ) : (
                     <p className="text-xl">No chats available</p>
                 )}
-                <DialogComponent
+                {/* <DialogComponent
                     trigger={
                         <Button size={'icon'} className="fixed right-0 bottom-0 m-8">
                             <MessageCircle className="h-5 w-5 text-neutral-200" />
@@ -94,7 +94,7 @@ const UserChatsPage = async () => {
                     title="Search"
                     desp="Search here"
                     content={<SearchPeople profileId={profile.id} />}
-                />
+                /> */}
             </div>
         </>
     );
