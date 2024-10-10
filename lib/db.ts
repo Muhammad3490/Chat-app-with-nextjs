@@ -17,5 +17,5 @@ try {
 export const db = globalThis.prisma || prismaClient;
 
 if (process.env.NODE_ENV !== "production") {
-    globalThis.prisma = db;
+    globalThis.prisma = db; // Ensure we are using globalThis
 }
