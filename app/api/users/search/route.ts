@@ -1,9 +1,9 @@
 // /app/api/users/search/route.ts
-import db from "@/lib/db"; // Prisma client
+// import db from "@/lib/db"; // Prisma client
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const query = searchParams.get("q");
+  // const query = searchParams.get("q");
 
   // if (!query) {
   //   return new Response(JSON.stringify({ users: [] }), { status: 200 });
